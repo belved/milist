@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/milist.github.io/static/css/main.e6c13ad2.css",
-    "main.js": "/milist.github.io/static/js/main.1b8e25dc.js",
-    "static/js/787.26460991.chunk.js": "/milist.github.io/static/js/787.26460991.chunk.js",
-    "index.html": "/milist.github.io/index.html",
-    "main.e6c13ad2.css.map": "/milist.github.io/static/css/main.e6c13ad2.css.map",
-    "main.1b8e25dc.js.map": "/milist.github.io/static/js/main.1b8e25dc.js.map",
-    "787.26460991.chunk.js.map": "/milist.github.io/static/js/787.26460991.chunk.js.map"
+    "main.css": "/milist/static/css/main.e6c13ad2.css",
+    "main.js": "/milist/static/js/main.5487a43e.js",
+    "static/js/787.26460991.chunk.js": "/milist/static/js/787.26460991.chunk.js",
+    "index.html": "/milist/index.html",
+    "main.e6c13ad2.css.map": "/milist/static/css/main.e6c13ad2.css.map",
+    "main.5487a43e.js.map": "/milist/static/js/main.5487a43e.js.map",
+    "787.26460991.chunk.js.map": "/milist/static/js/787.26460991.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.1b8e25dc.js"
+    "static/js/main.5487a43e.js"
   ]
 }
