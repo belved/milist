@@ -20,6 +20,7 @@ class TextInput extends React.Component {
         this.setState({
           inputValue: val
         });
+        this.props.onChange(val)
       }
 
     render() {
