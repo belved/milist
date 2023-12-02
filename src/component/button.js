@@ -12,18 +12,12 @@ const buttonStyle = {
 }
 
 class Button extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isSelected: false,
-        };
-    }
 
     render() {
       return (
         <div style={divStyle}>
-          <div style={buttonStyle} onClick={() => this.setState({isSelected: !this.state.isSelected})}>
-            {this.props.name}{this.state.isSelected? " v" : " x"}
+          <div style={buttonStyle} onClick={() => this.props.onClick()}>
+            {this.props.name}{this.props.state}
           </div>
         </div>
       );

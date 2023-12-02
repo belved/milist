@@ -6,11 +6,25 @@ const divStyle = {
   };
 
 class ButtonList extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        buttonListObject: props.buttonListObject
+      }
+    }
+
+    handleClick(i) {
+      this.props.onClick(i)
+    }
+
     render() {
       return (
         <div style={divStyle}>
-            {this.props.buttonList.length > 0 && this.props.buttonList.map((tuning, i) => {
-                return (<Button name={tuning.name}/>) 
+            {this.props.buttonListObject.length > 0 && this.props.buttonListObject.map((object, i) => {
+                return (<Button 
+                  name={object.name}
+                  state={object.state}
+                  onClick={() => this.handleClick(i)}/>) 
             })}
         </div>
       );
