@@ -14,11 +14,10 @@ class ButtonListSection extends React.Component {
         }
     }
 
-    handleClick(i) {
-        const elem = this.state.tuning
-        elem[i].state++
-        if(elem[i].state > 2) elem[i].state = 0
-        this.setState({tuning: elem})
+    handleClick(i, collection) {
+        const elem = collection
+        elem[i].state = !elem[i].state
+        this.setState({collection: elem})
     }
 
     componentDidMount() {
@@ -27,9 +26,9 @@ class ButtonListSection extends React.Component {
             const instrumentRes = await findAll("instruments")
             const styleRes = await findAll("style")
 
-            tuningRes.forEach((elem) => elem.state = 0)
-            instrumentRes.forEach((elem) => elem.state = 0)
-            styleRes.forEach((elem) => elem.state = 0)
+            tuningRes.forEach((elem) => elem.state = false)
+            instrumentRes.forEach((elem) => elem.state = false)
+            styleRes.forEach((elem) => elem.state = false)
 
             this.setState({
                 tuning: tuningRes,
@@ -45,6 +44,8 @@ class ButtonListSection extends React.Component {
         return (
       <div>
           <ButtonList buttonListObject={this.state.tuning} onClick={this.handleClick.bind(this)}/>
+          <ButtonList buttonListObject={this.state.instrument} onClick={this.handleClick.bind(this)}/>
+          <ButtonList buttonListObject={this.state.style} onClick={this.handleClick.bind(this)}/>
       </div>
     );
   }

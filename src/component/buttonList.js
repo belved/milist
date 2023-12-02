@@ -14,7 +14,7 @@ class ButtonList extends React.Component {
     }
 
     handleClick(i) {
-      this.props.onClick(i)
+      this.props.onClick(i, this.props.buttonListObject)
     }
 
     render() {
