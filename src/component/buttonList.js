@@ -6,13 +6,6 @@ const divStyle = {
   };
 
 class ButtonList extends React.Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        buttonListObject: props.buttonListObject
-      }
-    }
-
     handleClick(i) {
       this.props.onClick(i, this.props.buttonListObject)
     }
