@@ -16,7 +16,8 @@ class AddSongScreen extends React.Component {
             style: {},
             artist: {},
             artistId: "",
-            songName: ""
+            songName: "",
+            songCount: ""
         }
     }
 
@@ -78,7 +79,7 @@ class AddSongScreen extends React.Component {
             this.constructSongObject()
 
             const putSong = async () => {
-                await addSong("01", this.constructSongObject())
+                await addSong(this.state.songCount.toString(), this.constructSongObject())
             }
 
             putSong()
@@ -112,6 +113,7 @@ class AddSongScreen extends React.Component {
             const instrumentRes = await findAll("instruments")
             const styleRes = await findAll("style")
             const artistRes = await findAll("artists")
+            const songList = await findAll("songs")
 
             tuningRes.forEach((elem) => elem.state = false)
             instrumentRes.forEach((elem) => elem.state = false)
@@ -121,7 +123,8 @@ class AddSongScreen extends React.Component {
                 tuning: tuningRes,
                 instrument: instrumentRes,
                 style: styleRes,
-                artist: artistRes
+                artist: artistRes,
+                songCount: songList.length
             })
         }
 
