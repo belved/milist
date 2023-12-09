@@ -19,3 +19,7 @@ export const findAll = async (collectionName) => {
 export const addSong = async (id, song) => {
     await setDoc(doc(getDb(), "songs", id), song);
 }
+
+export const addArtist = async (id, artistName) => {
+    await setDoc(doc(getDb(), "artists", id), artistName);
+}

@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 
 import {
@@ -7,12 +6,14 @@ import {
   Route,
 } from "react-router-dom";
 import AddSongScreen from './pages/addSongScreen';
+import AddArtistScreen from './pages/addArtistScreen';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route exact path="/milist" element={<AddSongScreen/>} />
+        <Route path="/addArtist" element={<AddArtistScreen/>} />
       </Routes>
     </Router>
   );
