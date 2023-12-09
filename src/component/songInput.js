@@ -1,12 +1,20 @@
-import { useState } from 'react'
+import React from 'react'
 import TextInput from './textInput';
-function SongInput() {
-  return (
-    <div>
-      <TextInput placeholderText="Artist name"/>
-      <TextInput placeholderText="Song name"/>
-    </div>
-  );
+
+class SongInput extends React.Component {
+
+  onChange(id, value){
+    console.log(value)
+    this.props.onChange(value)
+  }
+
+  render(){
+    return (
+      <div>
+        
+      </div>
+    );
+  }
 }
 
   export default SongInput

@@ -6,25 +6,31 @@ const divStyle = {
   height: '75px'
 }
 
+const selectedButtonStyle = {
+  width: '100px',
+  height: '45px',
+  backgroundColor: 'green'
+}
+
 const buttonStyle = {
   width: '100px',
   height: '45px'
 }
 
 class Button extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isSelected: false,
-        };
-    }
 
     render() {
       return (
         <div style={divStyle}>
-          <div style={buttonStyle} onClick={() => this.setState({isSelected: !this.state.isSelected})}>
-            {this.props.name}{this.state.isSelected? " v" : " x"}
-          </div>
+          {this.props.state ? 
+          <div style={selectedButtonStyle} onClick={() => this.props.onClick()}>
+            {this.props.name}
+          </div> 
+          : 
+          <div style={buttonStyle} onClick={() => this.props.onClick()}>
+            {this.props.name}
+          </div>}
+          
         </div>
       );
     }
