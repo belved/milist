@@ -2,8 +2,9 @@ import React from 'react'
 
 import ButtonList from '../component/buttonList.js';
 import TextInput from "../component/textInput.js";
+import Error from "../object/error.js";
 
-import { findAll, addSong } from '../services/firestoreHelper.js'
+import { findAll, addSong } from '../services/firestoreHelper.js';
 import DropdownMenu from '../component/dropdownMenu.js';
 
 class AddSongScreen extends React.Component {
@@ -13,7 +14,7 @@ class AddSongScreen extends React.Component {
             tuning: {},
             instrument: {},
             style: {},
-            artist: {id: "O1", name:"Green Day"},
+            artist: {},
             artistId: "",
             songName: ""
         }
@@ -41,6 +42,24 @@ class AddSongScreen extends React.Component {
         return styles;
     }
 
+    checkData() {
+        if(this.state.songName === ""){
+            return new Error("Le titre est vide")
+        } else if (this.state.artistId === "") {
+            return new Error("Aucun artiste sélectionné")
+        } else if(this.state.tuning.find((elem) => elem.state === true) === undefined) {
+            return new Error("Aucun accordage sélectionné")
+        } else if(this.state.tuning.filter((elem) => elem.state === true).length > 1){
+            return new Error("Plusieurs accordage sélectionné")
+        }else if(this.state.instrument.find((elem) => elem.state === true) === undefined) {
+            return new Error("Aucun instrument sélectionné")
+        } else if(this.state.style.find((elem) => elem.state === true) === undefined) {
+            return new Error("Aucun style sélectionné")
+        } else {
+            return true
+        }
+    }
+
     constructSongObject() {
         var song = {
             title: this.state.songName,
@@ -54,19 +73,30 @@ class AddSongScreen extends React.Component {
     }
 
     addSong() {
+        const dataValidity = this.checkData()
+        if(dataValidity === true) {
+            this.constructSongObject()
 
-        this.constructSongObject()
+            const putSong = async () => {
+                await addSong("01", this.constructSongObject())
+            }
 
-        const putSong = async () => {
-            await addSong("01", this.constructSongObject())
+            putSong()
+        } else {
+            alert(dataValidity.getMessage())
         }
-
-        putSong()
     }
 
     handleClick(i, collection) {
         const elem = collection
         elem[i].state = !elem[i].state
+        this.setState({collection: elem})
+    }
+
+    handleTuningClick(i, collection) {
+        const elem = collection
+        elem.forEach((elem) => elem.state = false)
+        elem[i].state = true
         this.setState({collection: elem})
     }
 
@@ -105,11 +135,11 @@ class AddSongScreen extends React.Component {
     render(){
         return (
       <div>
-            <ButtonList buttonListObject={this.state.tuning} onClick={this.handleClick.bind(this)}/>
+            <ButtonList buttonListObject={this.state.tuning} onClick={this.handleTuningClick.bind(this)}/>
             <ButtonList buttonListObject={this.state.instrument} onClick={this.handleClick.bind(this)}/>
             <ButtonList buttonListObject={this.state.style} onClick={this.handleClick.bind(this)}/>
             <DropdownMenu menuName="Artist name" menuList={this.state.artist} callback={this.handleArtistMenuClick.bind(this)}/>
-            <TextInput placeholderText="Song name" onChange={this.onSongChange.bind(this)}/>
+            <TextInput placeholderText="Song title" onChange={this.onSongChange.bind(this)}/>
             <div onClick={() => this.addSong()}>Valider</div>
       </div>
     );
