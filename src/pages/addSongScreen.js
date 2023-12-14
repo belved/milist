@@ -74,6 +74,18 @@ class AddSongScreen extends React.Component {
         return song;
     }
 
+    resetData() {
+        this.state.tuning.forEach((elem) => elem.state = false)
+        this.state.instrument.forEach((elem) => elem.state = false)
+        this.state.style.forEach((elem) => elem.state = false)
+
+        this.setState({
+            artist: [{id: 0, name: "No data loaded"}],
+            selectedArtist: {id: 0, name: ""},
+            songName: ""
+        })
+    }
+
     addSong() {
         const dataValidity = this.checkData()
         if(dataValidity === true) {
@@ -81,6 +93,7 @@ class AddSongScreen extends React.Component {
 
             const putSong = async () => {
                 await addSong(this.state.songCount.toString(), this.constructSongObject())
+                this.resetData()
             }
 
             putSong()
