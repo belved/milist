@@ -6,6 +6,7 @@ import Error from "../object/error.js";
 
 import { findAll, addSong } from '../services/firestoreHelper.js';
 import DropdownMenu from '../component/dropdownMenu.js';
+import SearchableDropdown from '../component/searchableDropdown.js';
 
 class AddSongScreen extends React.Component {
     constructor(props){
@@ -14,8 +15,8 @@ class AddSongScreen extends React.Component {
             tuning: {},
             instrument: {},
             style: {},
-            artist: {},
-            artistId: "",
+            artist: [{id: 0, name: "No data loaded"}],
+            selectedArtist: {id: 0, name: ""},
             songName: "",
             songCount: ""
         }
@@ -46,7 +47,7 @@ class AddSongScreen extends React.Component {
     checkData() {
         if(this.state.songName === ""){
             return new Error("Le titre est vide")
-        } else if (this.state.artistId === "") {
+        } else if (this.state.selectedArtist.id === 0) {
             return new Error("Aucun artiste sélectionné")
         } else if(this.state.tuning.find((elem) => elem.state === true) === undefined) {
             return new Error("Aucun accordage sélectionné")
@@ -64,7 +65,7 @@ class AddSongScreen extends React.Component {
     constructSongObject() {
         var song = {
             title: this.state.songName,
-            artist: this.state.artistId,
+            artist: this.state.selectedArtist.id,
             tuning: this.state.tuning.find((elem) => elem.state === true).id,
             instrument: this.getInstrument(),
             style: this.getStyle()
@@ -119,20 +120,26 @@ class AddSongScreen extends React.Component {
             instrumentRes.forEach((elem) => elem.state = false)
             styleRes.forEach((elem) => elem.state = false)
 
+            console.log(songList)
+
             this.setState({
                 tuning: tuningRes,
                 instrument: instrumentRes,
                 style: styleRes,
                 artist: artistRes,
-                songCount: songList.length
+                songCount: songList.length + 1
             })
         }
 
         fetchData()
      }
 
-     handleArtistMenuClick(i) {
-        this.setState({artistId: i})
+     handleArtistMenuClick(val) {
+        if(val === null) {
+            this.setState({selectedArtist: {id: 0, name: val}})
+        } else {
+            this.setState({selectedArtist: val})
+        }
      }
     
     render(){
@@ -144,6 +151,13 @@ class AddSongScreen extends React.Component {
             <DropdownMenu menuName="Artist name" menuList={this.state.artist} callback={this.handleArtistMenuClick.bind(this)}/>
             <TextInput placeholderText="Song title" onChange={this.onSongChange.bind(this)}/>
             <div onClick={() => this.addSong()}>Valider</div>
+            <SearchableDropdown
+                options={this.state.artist}
+                label="name"
+                id="id"
+                selectedVal={this.state.selectedArtist.name}
+                handleChange={(val => this.handleArtistMenuClick(val))}
+            />
       </div>
     );
   }
