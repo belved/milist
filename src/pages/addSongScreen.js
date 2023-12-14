@@ -148,9 +148,6 @@ class AddSongScreen extends React.Component {
             <ButtonList buttonListObject={this.state.tuning} onClick={this.handleTuningClick.bind(this)}/>
             <ButtonList buttonListObject={this.state.instrument} onClick={this.handleClick.bind(this)}/>
             <ButtonList buttonListObject={this.state.style} onClick={this.handleClick.bind(this)}/>
-            <DropdownMenu menuName="Artist name" menuList={this.state.artist} callback={this.handleArtistMenuClick.bind(this)}/>
-            <TextInput placeholderText="Song title" onChange={this.onSongChange.bind(this)}/>
-            <div onClick={() => this.addSong()}>Valider</div>
             <SearchableDropdown
                 options={this.state.artist}
                 label="name"
@@ -158,6 +155,8 @@ class AddSongScreen extends React.Component {
                 selectedVal={this.state.selectedArtist.name}
                 handleChange={(val => this.handleArtistMenuClick(val))}
             />
+            <TextInput placeholderText="Song title" onChange={this.onSongChange.bind(this)}/>
+            <div onClick={() => this.addSong()}>Valider</div>
       </div>
     );
   }
