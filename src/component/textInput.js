@@ -10,16 +10,10 @@ const inputStyle = {
 class TextInput extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            inputValue: ""
-        };
     }
 
     updateInputValue(evt) {
         const val = evt.target.value;
-        this.setState({
-          inputValue: val
-        });
         this.props.onChange(val)
       }
 
@@ -29,7 +23,7 @@ class TextInput extends React.Component {
           <div style={inputStyle}>
             <input 
                 placeholder={this.props.placeholderText}
-                value={this.state.inputValue} 
+                value={this.props.value} 
                 onChange={evt => this.updateInputValue(evt)}/>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 import ButtonList from '../component/buttonList.js';
 import TextInput from "../component/textInput.js";
@@ -18,7 +18,9 @@ class AddSongScreen extends React.Component {
             artist: [{id: 0, name: "No data loaded"}],
             selectedArtist: {id: 0, name: ""},
             songName: "",
-            songCount: ""
+            songCount: "",
+            songList: {},
+            blockEvent: false
         }
     }
 
@@ -57,7 +59,11 @@ class AddSongScreen extends React.Component {
             return new Error("Aucun instrument sélectionné")
         } else if(this.state.style.find((elem) => elem.state === true) === undefined) {
             return new Error("Aucun style sélectionné")
+        } else if(this.state.songList.find((elem) => elem.title === this.state.songName && elem.artist === this.state.selectedArtist.id) !== undefined){
+            return new Error("Le morceau a déjà été ajouté")
         } else {
+            console.log(this.state.songList)
+            console.log(this.state.selectedArtist.id)
             return true
         }
     }
@@ -80,7 +86,6 @@ class AddSongScreen extends React.Component {
         this.state.style.forEach((elem) => elem.state = false)
 
         this.setState({
-            artist: [{id: 0, name: "No data loaded"}],
             selectedArtist: {id: 0, name: ""},
             songName: ""
         })
@@ -121,26 +126,36 @@ class AddSongScreen extends React.Component {
         })
     }
 
+    keyPressed(event){
+        if (event.key === 'Enter' && this.state.blockEvent === false) {
+            this.setState({blockEvent: true})
+            this.addSong()
+        } else {
+            this.setState({blockEvent: false})
+        }
+      }
+
     componentDidMount() {
+        document.addEventListener("keydown", this.keyPressed.bind(this), false);
+
         const fetchData = async () => {
             const tuningRes = await findAll("tuning")
             const instrumentRes = await findAll("instruments")
             const styleRes = await findAll("style")
             const artistRes = await findAll("artists")
-            const songList = await findAll("songs")
+            const songListRes = await findAll("songs")
 
             tuningRes.forEach((elem) => elem.state = false)
             instrumentRes.forEach((elem) => elem.state = false)
             styleRes.forEach((elem) => elem.state = false)
-
-            console.log(songList)
 
             this.setState({
                 tuning: tuningRes,
                 instrument: instrumentRes,
                 style: styleRes,
                 artist: artistRes,
-                songCount: songList.length + 1
+                songList: songListRes,
+                songCount: songListRes.length + 1
             })
         }
 
@@ -168,7 +183,7 @@ class AddSongScreen extends React.Component {
                 selectedVal={this.state.selectedArtist.name}
                 handleChange={(val => this.handleArtistMenuClick(val))}
             />
-            <TextInput placeholderText="Song title" onChange={this.onSongChange.bind(this)}/>
+            <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
             <div onClick={() => this.addSong()}>Valider</div>
       </div>
     );
