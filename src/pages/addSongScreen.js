@@ -16,7 +16,7 @@ class AddSongScreen extends React.Component {
             instrument: {},
             style: {},
             artist: [{id: 0, name: "No data loaded"}],
-            selectedArtist: {id: 0, name: "Select artist"},
+            selectedArtist: {id: 0, name: ""},
             songName: "",
             songCount: ""
         }
@@ -135,7 +135,11 @@ class AddSongScreen extends React.Component {
      }
 
      handleArtistMenuClick(val) {
-        this.setState({selectedArtist: val})
+        if(val === null) {
+            this.setState({selectedArtist: {id: 0, name: val}})
+        } else {
+            this.setState({selectedArtist: val})
+        }
      }
     
     render(){
