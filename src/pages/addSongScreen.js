@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 import ButtonList from '../component/buttonList.js';
 import TextInput from "../component/textInput.js";
@@ -18,7 +18,8 @@ class AddSongScreen extends React.Component {
             artist: [{id: 0, name: "No data loaded"}],
             selectedArtist: {id: 0, name: ""},
             songName: "",
-            songCount: ""
+            songCount: "",
+            blockEvent: false
         }
     }
 
@@ -80,7 +81,6 @@ class AddSongScreen extends React.Component {
         this.state.style.forEach((elem) => elem.state = false)
 
         this.setState({
-            artist: [{id: 0, name: "No data loaded"}],
             selectedArtist: {id: 0, name: ""},
             songName: ""
         })
@@ -121,7 +121,18 @@ class AddSongScreen extends React.Component {
         })
     }
 
+    keyPressed(event){
+        if (event.key === 'Enter' && this.state.blockEvent === false) {
+            this.setState({blockEvent: true})
+            this.addSong()
+        } else {
+            this.setState({blockEvent: false})
+        }
+      }
+
     componentDidMount() {
+        document.addEventListener("keydown", this.keyPressed.bind(this), false);
+
         const fetchData = async () => {
             const tuningRes = await findAll("tuning")
             const instrumentRes = await findAll("instruments")
@@ -132,8 +143,6 @@ class AddSongScreen extends React.Component {
             tuningRes.forEach((elem) => elem.state = false)
             instrumentRes.forEach((elem) => elem.state = false)
             styleRes.forEach((elem) => elem.state = false)
-
-            console.log(songList)
 
             this.setState({
                 tuning: tuningRes,
@@ -168,7 +177,7 @@ class AddSongScreen extends React.Component {
                 selectedVal={this.state.selectedArtist.name}
                 handleChange={(val => this.handleArtistMenuClick(val))}
             />
-            <TextInput placeholderText="Song title" onChange={this.onSongChange.bind(this)}/>
+            <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
             <div onClick={() => this.addSong()}>Valider</div>
       </div>
     );
