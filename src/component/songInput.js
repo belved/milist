@@ -4,7 +4,6 @@ import TextInput from './textInput';
 class SongInput extends React.Component {
 
   onChange(id, value){
-    console.log(value)
     this.props.onChange(value)
   }
 
