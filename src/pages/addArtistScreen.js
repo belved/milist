@@ -2,6 +2,8 @@ import React from 'react'
 
 import { findAll, addArtist } from '../services/firestoreHelper.js';
 
+import toUpperCase from '../utils/strings.js'
+
 class AddArtistScreen extends React.Component {
     constructor(props) {
         super(props)
@@ -29,7 +31,7 @@ class AddArtistScreen extends React.Component {
 
      addArtist() {
         const id = this.state.artist.length+1;
-        const artist = {name: this.state.artistName}
+        const artist = {name: toUpperCase(this.state.artistName)}
 
         this.state.artist.push(artist)
 

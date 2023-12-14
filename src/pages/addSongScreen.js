@@ -3,9 +3,9 @@ import React from 'react'
 import ButtonList from '../component/buttonList.js';
 import TextInput from "../component/textInput.js";
 import Error from "../object/error.js";
+import toUpperCase from '../utils/strings.js';
 
 import { findAll, addSong } from '../services/firestoreHelper.js';
-import DropdownMenu from '../component/dropdownMenu.js';
 import SearchableDropdown from '../component/searchableDropdown.js';
 
 class AddSongScreen extends React.Component {
@@ -64,7 +64,7 @@ class AddSongScreen extends React.Component {
 
     constructSongObject() {
         var song = {
-            title: this.state.songName,
+            title: toUpperCase(this.state.songName),
             artist: this.state.selectedArtist.id,
             tuning: this.state.tuning.find((elem) => elem.state === true).id,
             instrument: this.getInstrument(),
