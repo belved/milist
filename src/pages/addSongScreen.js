@@ -19,8 +19,9 @@ class AddSongScreen extends React.Component {
             selectedArtist: {id: 0, name: ""},
             songName: "",
             songCount: "",
-            songList: {},
-            blockEvent: false
+            songList: [],
+            blockEvent: false,
+            songListForDisplay: []
         }
     }
 
@@ -119,6 +120,7 @@ class AddSongScreen extends React.Component {
         elem.forEach((elem) => elem.state = false)
         elem[i].state = true
         this.setState({collection: elem})
+        this.setSongForDisplay()
     }
 
     onSongChange(song) {
@@ -136,6 +138,10 @@ class AddSongScreen extends React.Component {
         }
       }
 
+    compareObject(a, b) {
+        return b.id - a.id;
+      }
+
     componentDidMount() {
         document.addEventListener("keyup", this.keyPressed.bind(this), false);
 
@@ -150,13 +156,28 @@ class AddSongScreen extends React.Component {
             instrumentRes.forEach((elem) => elem.state = false)
             styleRes.forEach((elem) => elem.state = false)
 
+            var list = []
+            songListRes.forEach(element => {
+                var song = {}
+                song.id = element.id
+                song.title = element.title
+                song.artist = artistRes.find((artist) => artist.id === element.artist).name
+                song.instrument = instrumentRes.filter(instrument => element.instrument.some(selectInstrument => instrument.id === selectInstrument)).name;
+                song.style = styleRes.filter(style => element.style.some(selectStyle => style.id === selectStyle)).name;
+                song.tuning = tuningRes.find((tuning) => tuning.id === element.tuning).name
+                list.push(song)
+            });
+
+            list.sort(this.compareObject);
+
             this.setState({
                 tuning: tuningRes,
                 instrument: instrumentRes,
                 style: styleRes,
                 artist: artistRes,
                 songList: songListRes,
-                songCount: songListRes.length + 1
+                songCount: songListRes.length + 1,
+                songListForDisplay: list
             })
         }
 
@@ -186,6 +207,9 @@ class AddSongScreen extends React.Component {
             />
             <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
             <div onClick={() => this.addSong()}>Valider</div>
+            {this.state.songListForDisplay.length > 0 && this.state.songListForDisplay.map((song, i) => {
+                return (<p>{song.id} | {song.artist} | {song.title} | {song.tuning}</p>) 
+            })}
       </div>
     );
   }
