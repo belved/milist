@@ -59,11 +59,9 @@ class AddSongScreen extends React.Component {
             return new Error("Aucun instrument sélectionné")
         } else if(this.state.style.find((elem) => elem.state === true) === undefined) {
             return new Error("Aucun style sélectionné")
-        } else if(this.state.songList.find((elem) => elem.title === this.state.songName && elem.artist === this.state.selectedArtist.id) !== undefined){
+        } else if(this.state.songList.find((elem) => elem.title === toUpperCase(this.state.songName) && elem.artist === this.state.selectedArtist.id) !== undefined){
             return new Error("Le morceau a déjà été ajouté")
         } else {
-            console.log(this.state.songList)
-            console.log(this.state.selectedArtist.id)
             return true
         }
     }
@@ -80,25 +78,28 @@ class AddSongScreen extends React.Component {
         return song;
     }
 
-    resetData() {
-        this.state.tuning.forEach((elem) => elem.state = false)
-        this.state.instrument.forEach((elem) => elem.state = false)
-        this.state.style.forEach((elem) => elem.state = false)
+    resetData(song) {
+        //this.state.tuning.forEach((elem) => elem.state = false)
+        //this.state.instrument.forEach((elem) => elem.state = false)
+        //this.state.style.forEach((elem) => elem.state = false)
 
+        var songListTemp = this.state.songList
+        songListTemp.push(song)
         this.setState({
-            selectedArtist: {id: 0, name: ""},
-            songName: ""
+            songName: "",
+            songCount: this.state.songCount+1,
+            songList: songListTemp
         })
     }
 
     addSong() {
         const dataValidity = this.checkData()
         if(dataValidity === true) {
-            this.constructSongObject()
+            var song = this.constructSongObject()
 
             const putSong = async () => {
-                await addSong(this.state.songCount.toString(), this.constructSongObject())
-                this.resetData()
+                await addSong(this.state.songCount.toString(), song)
+                this.resetData(song)
             }
 
             putSong()
@@ -136,7 +137,7 @@ class AddSongScreen extends React.Component {
       }
 
     componentDidMount() {
-        document.addEventListener("keydown", this.keyPressed.bind(this), false);
+        document.addEventListener("keyup", this.keyPressed.bind(this), false);
 
         const fetchData = async () => {
             const tuningRes = await findAll("tuning")
