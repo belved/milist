@@ -19,6 +19,7 @@ class AddSongScreen extends React.Component {
             selectedArtist: {id: 0, name: ""},
             songName: "",
             songCount: "",
+            songList: {},
             blockEvent: false
         }
     }
@@ -58,7 +59,11 @@ class AddSongScreen extends React.Component {
             return new Error("Aucun instrument sélectionné")
         } else if(this.state.style.find((elem) => elem.state === true) === undefined) {
             return new Error("Aucun style sélectionné")
+        } else if(this.state.songList.find((elem) => elem.title === this.state.songName && elem.artist === this.state.selectedArtist.id) !== undefined){
+            return new Error("Le morceau a déjà été ajouté")
         } else {
+            console.log(this.state.songList)
+            console.log(this.state.selectedArtist.id)
             return true
         }
     }
@@ -138,7 +143,7 @@ class AddSongScreen extends React.Component {
             const instrumentRes = await findAll("instruments")
             const styleRes = await findAll("style")
             const artistRes = await findAll("artists")
-            const songList = await findAll("songs")
+            const songListRes = await findAll("songs")
 
             tuningRes.forEach((elem) => elem.state = false)
             instrumentRes.forEach((elem) => elem.state = false)
@@ -149,7 +154,8 @@ class AddSongScreen extends React.Component {
                 instrument: instrumentRes,
                 style: styleRes,
                 artist: artistRes,
-                songCount: songList.length + 1
+                songList: songListRes,
+                songCount: songListRes.length + 1
             })
         }
 
