@@ -13,7 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/milist" element={<AddSongScreen/>} />
-        <Route path="/addArtist" element={<AddArtistScreen/>} />
+        <Route path="milist/addArtist" element={<AddArtistScreen/>} />
       </Routes>
     </Router>
   );

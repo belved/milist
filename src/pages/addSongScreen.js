@@ -7,6 +7,7 @@ import toUpperCase from '../utils/strings.js';
 
 import { findAll, addSong } from '../services/firestoreHelper.js';
 import SearchableDropdown from '../component/searchableDropdown.js';
+import AddedSong from '../component/addedSong.js';
 
 class AddSongScreen extends React.Component {
     constructor(props){
@@ -19,8 +20,9 @@ class AddSongScreen extends React.Component {
             selectedArtist: {id: 0, name: ""},
             songName: "",
             songCount: "",
-            songList: {},
-            blockEvent: false
+            songList: [],
+            blockEvent: false,
+            songListForDisplay: []
         }
     }
 
@@ -79,16 +81,19 @@ class AddSongScreen extends React.Component {
     }
 
     resetData(song) {
-        //this.state.tuning.forEach((elem) => elem.state = false)
-        //this.state.instrument.forEach((elem) => elem.state = false)
-        //this.state.style.forEach((elem) => elem.state = false)
+        song.id = this.state.songCount
 
         var songListTemp = this.state.songList
         songListTemp.push(song)
+
+        var displayedListTemp = this.state.songListForDisplay
+        displayedListTemp.unshift(song)
+        displayedListTemp.sort(this.compareObject);
         this.setState({
             songName: "",
             songCount: this.state.songCount+1,
-            songList: songListTemp
+            songList: songListTemp,
+            songListForDisplay: displayedListTemp
         })
     }
 
@@ -136,6 +141,10 @@ class AddSongScreen extends React.Component {
         }
       }
 
+    compareObject(a, b) {
+        return b.id - a.id;
+      }
+
     componentDidMount() {
         document.addEventListener("keyup", this.keyPressed.bind(this), false);
 
@@ -150,13 +159,32 @@ class AddSongScreen extends React.Component {
             instrumentRes.forEach((elem) => elem.state = false)
             styleRes.forEach((elem) => elem.state = false)
 
+            var list = []
+            songListRes.forEach(element => {
+                var song = {}
+                var instrument = instrumentRes.filter(instrument => element.instrument.some(selectInstrument => instrument.id === selectInstrument))
+                var instrumentList = []
+                instrument.map(elem => instrumentList.push(elem))
+
+                song.id = element.id
+                song.title = element.title
+                song.artist = artistRes.find((artist) => artist.id === element.artist).name
+                song.instrument = instrumentList
+                song.style = styleRes.find(style => element.style.some(selectStyle => style.id === selectStyle)).name;
+                song.tuning = tuningRes.find((tuning) => tuning.id === element.tuning).name
+                list.push(song)
+            });
+
+            list.sort(this.compareObject);
+
             this.setState({
                 tuning: tuningRes,
                 instrument: instrumentRes,
                 style: styleRes,
                 artist: artistRes,
                 songList: songListRes,
-                songCount: songListRes.length + 1
+                songCount: parseInt(list[0].id) + 1,
+                songListForDisplay: list
             })
         }
 
@@ -186,6 +214,9 @@ class AddSongScreen extends React.Component {
             />
             <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
             <div onClick={() => this.addSong()}>Valider</div>
+            {this.state.songListForDisplay.length > 0 && this.state.songListForDisplay.map((song, i) => {
+                return (<AddedSong song={song}/>) 
+            })}
       </div>
     );
   }

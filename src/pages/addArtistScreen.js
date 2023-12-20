@@ -50,14 +50,14 @@ class AddArtistScreen extends React.Component {
     render(){
         return (
       <div>
-            {this.state.artist.length > 0 && this.state.artist.map((artist, i) => {
-                return (<p>{artist.name}</p>) 
-            })}
             <input 
                 placeholder="Artist Name"
                 value={this.state.artistName} 
                 onChange={evt => this.setState({ artistName: evt.target.value}) }/>
             <div onClick={() => this.addArtist()}>Valider</div>
+            {this.state.artist.length > 0 && this.state.artist.map((artist, i) => {
+                return (<p>{artist.name}</p>) 
+            })}
       </div>
     );
   }
