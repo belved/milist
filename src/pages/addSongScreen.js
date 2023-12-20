@@ -37,11 +37,33 @@ class AddSongScreen extends React.Component {
         return instrument;
     }
 
+    getInstrumentObject() {
+        var instrument = []
+        this.state.instrument.forEach((elem) => {
+            if(elem.state){
+                instrument.push(elem)
+            }
+        })
+
+        return instrument;
+    }
+
     getStyle() {
         var styles = []
         this.state.style.forEach((elem) => {
             if(elem.state){
                 styles.push(elem.id)
+            }
+        })
+
+        return styles;
+    }
+
+    getStyleName() {
+        var styles = []
+        this.state.style.forEach((elem) => {
+            if(elem.state){
+                styles.push(elem.name)
             }
         })
 
@@ -80,8 +102,21 @@ class AddSongScreen extends React.Component {
         return song;
     }
 
-    resetData(song) {
-        song.id = this.state.songCount
+    constructDisplayedSongObject() {
+        var song = {
+            id: this.state.songCount,
+            title: toUpperCase(this.state.songName),
+            artist: this.state.selectedArtist.name,
+            tuning: this.state.tuning.find((elem) => elem.state === true).name,
+            instrument: this.getInstrumentObject(),
+            style: this.getStyleName()
+        }
+
+        return song
+    }
+
+    resetData() {
+        var song = this.constructDisplayedSongObject()
 
         var songListTemp = this.state.songList
         songListTemp.push(song)
