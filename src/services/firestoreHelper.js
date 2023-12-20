@@ -23,3 +23,7 @@ export const addSong = async (id, song) => {
 export const addArtist = async (id, artistName) => {
     await setDoc(doc(getDb(), "artists", id), artistName);
 }
+
+export const updateSong = async (id, song) => {
+    await setDoc(doc(getDb(), "songs", id), song);
+}
