@@ -113,16 +113,21 @@ class AddSongScreen extends React.Component {
         }
     }
 
-    handleClick(i, collection) {
+    handleClickMultiple(i, collection) {
         const elem = collection
         elem[i].state = !elem[i].state
         this.setState({collection: elem})
     }
 
-    handleTuningClick(i, collection) {
+    handleClickSingle(i, collection) {
         const elem = collection
-        elem.forEach((elem) => elem.state = false)
-        elem[i].state = true
+        elem.map((elem, pos) => {
+            if(pos === i) {
+                elem.state = !elem.state
+            } else {
+                elem.state = false;
+            }
+        })
         this.setState({collection: elem})
     }
 
@@ -202,9 +207,9 @@ class AddSongScreen extends React.Component {
     render(){
         return (
       <div>
-            <ButtonList buttonListObject={this.state.tuning} onClick={this.handleTuningClick.bind(this)}/>
-            <ButtonList buttonListObject={this.state.instrument} onClick={this.handleClick.bind(this)}/>
-            <ButtonList buttonListObject={this.state.style} onClick={this.handleClick.bind(this)}/>
+            <ButtonList buttonListObject={this.state.tuning} onClick={this.handleClickSingle.bind(this)}/>
+            <ButtonList buttonListObject={this.state.instrument} onClick={this.handleClickMultiple.bind(this)}/>
+            <ButtonList buttonListObject={this.state.style} onClick={this.handleClickSingle.bind(this)}/>
             <SearchableDropdown
                 options={this.state.artist}
                 label="name"
