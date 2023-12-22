@@ -1,5 +1,17 @@
 import React from 'react';
 import InstrumentImage from './instrumentImage';
+import deleteIcon from '../icons/delete.png';
+
+const divContainer = {
+  display: 'flex',
+  alignItems: 'center'
+}
+
+const deleteButtonStyle = {
+  height: '40px',
+  width: '40px',
+  margin: '0px 0px 0px 40px'
+}
 
 const divStyle = {
   position: 'relative',
@@ -7,7 +19,7 @@ const divStyle = {
   padding: '0px 0px 0px 10px',
   width: '500px',
   border: '1px solid black',
-  borderRadius: '10px',
+  borderRadius: '10px'
 }
 
 const idStyle = {
@@ -28,7 +40,7 @@ class AddedSong extends React.Component {
 
     render() {
       return (
-        <div>
+        <div style = {divContainer}>
           <div style={divStyle}>
             <div style={idStyle}>{this.props.song.id}</div>
             <b>{this.props.song.artist}</b> | {this.props.song.title}
@@ -38,7 +50,7 @@ class AddedSong extends React.Component {
             })}
             <br/>
           </div>
-          <div onClick={() => this.handleDelete(this.props.song.id)}>Delete {this.props.song.id}</div>
+          <img src={deleteIcon} style={deleteButtonStyle} onClick={() => this.handleDelete(this.props.song.id)}/>
         </div>
       );
     }
