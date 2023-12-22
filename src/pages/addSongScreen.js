@@ -5,7 +5,7 @@ import TextInput from "../component/textInput.js";
 import Error from "../object/error.js";
 import toUpperCase from '../utils/strings.js';
 
-import { findAll, addSong } from '../services/firestoreHelper.js';
+import { findAll, addSong, deleteSong } from '../services/firestoreHelper.js';
 import SearchableDropdown from '../component/searchableDropdown.js';
 import AddedSong from '../component/addedSong.js';
 
@@ -115,18 +115,32 @@ class AddSongScreen extends React.Component {
         return song
     }
 
-    resetData() {
-        var song = this.constructDisplayedSongObject()
-
+    resetData(isDelete, id) {
         var songListTemp = this.state.songList
-        songListTemp.push(song)
-
         var displayedListTemp = this.state.songListForDisplay
-        displayedListTemp.unshift(song)
-        displayedListTemp.sort(this.compareObject);
+        var soundCountTemp = this.state.songCount
+
+        if(isDelete) {
+            var posSongList = songListTemp.findIndex(elem => elem.id === id);
+            var posDisplayedSongList = displayedListTemp.findIndex(elem => elem.id === id);
+
+            songListTemp.splice(posSongList, 1)
+            displayedListTemp.splice(posDisplayedSongList, 1)
+
+
+            soundCountTemp = soundCountTemp - 1
+        } else {
+            var song = this.constructDisplayedSongObject()
+            
+            songListTemp.push(song)
+
+            displayedListTemp.unshift(song)
+            displayedListTemp.sort(this.compareObject);
+            soundCountTemp = soundCountTemp + 1
+        }
         this.setState({
             songName: "",
-            songCount: this.state.songCount+1,
+            songCount: soundCountTemp,
             songList: songListTemp,
             songListForDisplay: displayedListTemp
         })
@@ -139,7 +153,8 @@ class AddSongScreen extends React.Component {
 
             const putSong = async () => {
                 await addSong(this.state.songCount.toString(), song)
-                this.resetData(song)
+                await findAll("songs")
+                this.resetData(false)
             }
 
             putSong()
@@ -231,6 +246,14 @@ class AddSongScreen extends React.Component {
         fetchData()
      }
 
+     deleteSong(id) {
+        const songDeletion = async () => {
+            await deleteSong(id)
+            this.resetData(true, id)
+        }
+        songDeletion()
+     }
+
      handleArtistMenuClick(val) {
         if(val === null) {
             this.setState({selectedArtist: {id: 0, name: val}})
@@ -255,7 +278,7 @@ class AddSongScreen extends React.Component {
             <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
             <div onClick={() => this.addSong()}>Valider</div>
             {this.state.songListForDisplay.length > 0 && this.state.songListForDisplay.map((song, i) => {
-                return (<AddedSong song={song}/>) 
+                return (<AddedSong song={song} handleDelete={this.deleteSong.bind(this)}/>) 
             })}
       </div>
     );
