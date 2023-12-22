@@ -19,7 +19,11 @@ const idStyle = {
 
 class AddedSong extends React.Component {
   handleDelete(i) {
-    this.props.handleDelete(i)
+    const confirmation = window.confirm('Are you sure you want to delete this song ?');
+
+    if(confirmation) {
+      this.props.handleDelete(i)
+    }
   }
 
     render() {
