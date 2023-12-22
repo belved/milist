@@ -18,17 +18,23 @@ const idStyle = {
 }
 
 class AddedSong extends React.Component {
+  handleDelete(i) {
+    this.props.handleDelete(i)
+  }
 
     render() {
       return (
-        <div style={divStyle}>
-          <div style={idStyle}>{this.props.song.id}</div>
-          <b>{this.props.song.artist}</b> | {this.props.song.title}
-          <br/>
-          Tuning : {this.props.song.tuning} | {this.props.song.style} | {this.props.song.instrument.map(element => {
-            return (<InstrumentImage id={element.id}/>)
-          })}
-          <br/>
+        <div>
+          <div style={divStyle}>
+            <div style={idStyle}>{this.props.song.id}</div>
+            <b>{this.props.song.artist}</b> | {this.props.song.title}
+            <br/>
+            Tuning : {this.props.song.tuning} | {this.props.song.style} | {this.props.song.instrument.map(element => {
+              return (<InstrumentImage id={element.id}/>)
+            })}
+            <br/>
+          </div>
+          <div onClick={() => this.handleDelete(this.props.song.id)}>Delete {this.props.song.id}</div>
         </div>
       );
     }

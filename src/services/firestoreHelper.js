@@ -1,4 +1,4 @@
-import { getDocs, setDoc, collection, doc } from "firebase/firestore"; 
+import { getDocs, setDoc, deleteDoc, collection, doc } from "firebase/firestore"; 
 import { getDb } from "./firestore.js"
 
 export const findAll = async (collectionName) => {
@@ -22,6 +22,15 @@ export const addSong = async (id, song) => {
 
 export const addArtist = async (id, artistName) => {
     await setDoc(doc(getDb(), "artists", id), artistName);
+}
+
+export const deleteSong = async (id) => {
+    try {
+        await deleteDoc(doc(getDb(), "songs", id));
+        console.log('Document supprimé avec succès');
+    } catch (error) {
+        console.error('Erreur lors de la suppression du document : ', error);
+    }
 }
 
 export const updateSong = async (id, song) => {
