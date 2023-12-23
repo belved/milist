@@ -1,13 +1,14 @@
 import React from 'react';
 import InstrumentImage from './instrumentImage';
 import deleteIcon from '../icons/delete.png';
+import drum from '../icons/drum.png';
 
 const divContainer = {
   display: 'flex',
   alignItems: 'center'
 }
 
-const deleteButtonStyle = {
+const buttonStyle = {
   height: '40px',
   width: '40px',
   margin: '0px 0px 0px 40px'
@@ -38,19 +39,24 @@ class AddedSong extends React.Component {
     }
   }
 
+  handleUpdate(i) {
+    this.props.handleUpdate(i)
+  }
+
     render() {
       return (
         <div style = {divContainer}>
           <div style={divStyle}>
             <div style={idStyle}>{this.props.song.id}</div>
-            <b>{this.props.song.artist}</b> | {this.props.song.title}
+            <b>{this.props.song.artist.name}</b> | {this.props.song.title}
             <br/>
             Tuning : {this.props.song.tuning} | {this.props.song.style} | {this.props.song.instrument.map(element => {
               return (<InstrumentImage id={element.id}/>)
             })}
             <br/>
           </div>
-          <img src={deleteIcon} style={deleteButtonStyle} onClick={() => this.handleDelete(this.props.song.id)}/>
+          <img src={deleteIcon} style={buttonStyle} onClick={() => this.handleDelete(this.props.song.id)}/>
+          <img src={drum} style={buttonStyle} onClick={() => this.handleUpdate(this.props.song.id)}/>
         </div>
       );
     }
