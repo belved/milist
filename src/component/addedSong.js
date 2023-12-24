@@ -23,6 +23,16 @@ const divStyle = {
   borderRadius: '10px'
 }
 
+const divStyleSelected = {
+  position: 'relative',
+  margin: '10px 10px 0px 20px',
+  padding: '0px 0px 0px 10px',
+  width: '500px',
+  border: '1px solid black',
+  borderRadius: '10px',
+  backgroundColor: 'grey'
+}
+
 const idStyle = {
   position: 'absolute',
   display: 'inline-block',
@@ -31,6 +41,13 @@ const idStyle = {
 }
 
 class AddedSong extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+        isSelected: false
+    }
+  }
+
   handleDelete(i) {
     const confirmation = window.confirm('Are you sure you want to delete this song ?');
 
@@ -40,13 +57,15 @@ class AddedSong extends React.Component {
   }
 
   handleUpdate(i) {
+    this.setState({isSelected: !this.state.isSelected})
     this.props.handleUpdate(i)
   }
 
     render() {
       return (
         <div style = {divContainer}>
-          <div style={divStyle}>
+          {this.state.isSelected? 
+            <div style={divStyleSelected}>
             <div style={idStyle}>{this.props.song.id}</div>
             <b>{this.props.song.artist.name}</b> | {this.props.song.title}
             <br/>
@@ -54,7 +73,18 @@ class AddedSong extends React.Component {
               return (<InstrumentImage id={element.id}/>)
             })}
             <br/>
-          </div>
+          </div> 
+          : 
+          <div style={divStyle}>
+          <div style={idStyle}>{this.props.song.id}</div>
+          <b>{this.props.song.artist.name}</b> | {this.props.song.title}
+          <br/>
+          Tuning : {this.props.song.tuning} | {this.props.song.style} | {this.props.song.instrument.map(element => {
+            return (<InstrumentImage id={element.id}/>)
+          })}
+          <br/>
+        </div>
+          }
           <img src={deleteIcon} style={buttonStyle} onClick={() => this.handleDelete(this.props.song.id)}/>
           <img src={update} style={buttonStyle} onClick={() => this.handleUpdate(this.props.song.id)}/>
         </div>
