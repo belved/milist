@@ -334,7 +334,7 @@ class AddSongScreen extends React.Component {
                 handleChange={(val => this.handleArtistMenuClick(val))}
             />
             <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
-            <div onClick={() => this.addSong()}>Valider</div>
+            <div onClick={() => this.addSong()}>{this.state.selectedId? "Update" : "Validate"}</div>
             {this.state.songListForDisplay.length > 0 && this.state.songListForDisplay.map((song, i) => {
                 return (<AddedSong song={song} handleDelete={this.deleteSong.bind(this)} handleUpdate={this.updateSong.bind(this)}/>) 
             })}
