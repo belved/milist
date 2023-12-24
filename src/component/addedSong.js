@@ -1,7 +1,7 @@
 import React from 'react';
 import InstrumentImage from './instrumentImage';
 import deleteIcon from '../icons/delete.png';
-import drum from '../icons/drum.png';
+import update from '../icons/update.png';
 
 const divContainer = {
   display: 'flex',
@@ -56,7 +56,7 @@ class AddedSong extends React.Component {
             <br/>
           </div>
           <img src={deleteIcon} style={buttonStyle} onClick={() => this.handleDelete(this.props.song.id)}/>
-          <img src={drum} style={buttonStyle} onClick={() => this.handleUpdate(this.props.song.id)}/>
+          <img src={update} style={buttonStyle} onClick={() => this.handleUpdate(this.props.song.id)}/>
         </div>
       );
     }
