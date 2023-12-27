@@ -147,20 +147,21 @@ class AddSongScreen extends React.Component {
 
             soundCountTemp = soundCountTemp - 1
         } if(isDelete === false && this.state.selectedId !== undefined) {
-            var displayedSong = this.constructDisplayedSongObject()
-            var dbSong = this.constructSongObject()
-            var selectedId = this.state.selectedId
-
-            dbSong.id = selectedId
-            displayedSong.id = selectedId
-
-            var posSongList = songListTemp.findIndex(elem => elem.id === selectedId);
-            var posDisplayedSongList = displayedListTemp.findIndex(elem => elem.id === selectedId);
-
-            songListTemp[posSongList] = dbSong
-            displayedListTemp[posDisplayedSongList] = displayedSong
-            displayedListTemp.sort(this.compareObject)
-
+            if(id !== undefined) {
+                var displayedSong = this.constructDisplayedSongObject()
+                var dbSong = this.constructSongObject()
+                var selectedId = this.state.selectedId
+    
+                dbSong.id = selectedId
+                displayedSong.id = selectedId
+    
+                var posSongList = songListTemp.findIndex(elem => elem.id === selectedId);
+                var posDisplayedSongList = displayedListTemp.findIndex(elem => elem.id === selectedId);
+    
+                songListTemp[posSongList] = dbSong
+                displayedListTemp[posDisplayedSongList] = displayedSong
+                displayedListTemp.sort(this.compareObject)
+            }
             this.resetButtonState(this.state.tuning)
             this.resetButtonState(this.state.instrument)
             this.resetButtonState(this.state.style)
@@ -323,9 +324,8 @@ class AddSongScreen extends React.Component {
         this.resetButtonState(this.state.tuning)
 
         if(this.state.selectedId === id) {
-            console.log("t")
             this.setState({selectedId: undefined})
-            this.resetData(false, id)
+            this.resetData(false)
         } else {
             this.setState({selectedId: song.id})
 
@@ -368,7 +368,7 @@ class AddSongScreen extends React.Component {
             <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
             <hr style={lineSeparatorStyle}/>
             {this.state.songListForDisplay.length > 0 && this.state.songListForDisplay.map((song, i) => {
-                return (<AddedSong song={song} handleDelete={this.deleteSong.bind(this)} handleUpdate={this.updateSong.bind(this)}/>) 
+                return (<AddedSong song={song} handleDelete={this.deleteSong.bind(this)} handleUpdate={this.updateSong.bind(this)} selectedId={this.state.selectedId}/>) 
             })}
       </div>
     );
