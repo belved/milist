@@ -192,7 +192,7 @@ class AddSongScreen extends React.Component {
 
     addSong() {
         const dataValidity = this.checkData()
-        if(dataValidity === true) {
+        if(dataValidity === true || this.state.selectedId !== undefined) {
             var song = this.constructSongObject()
 
             const putSong = async () => {
@@ -202,7 +202,7 @@ class AddSongScreen extends React.Component {
                     await addSong(this.state.selectedId.toString(), song)
                 }
                 await findAll("songs")
-                this.resetData(false)
+                this.resetData(false, this.state.selectedId)
             }
 
             putSong()
