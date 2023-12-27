@@ -5,6 +5,7 @@ import acoustic_guitar from '../icons/acoustic_guitar.png';
 import bass_guitar from '../icons/bass_guitar.png';
 import classical_guitar from '../icons/classical_guitar.png';
 import drum from '../icons/drum.png';
+import seven_string_guitar from '../icons/7_string_guitar.png';
 
 const imageStyle = {
     width: '40px',
@@ -32,7 +33,7 @@ class InstrumentImage extends React.Component {
                 uri = drum
                 break;
             case "06":
-                uri = ""
+                uri = seven_string_guitar
                 break
             default:
                 uri = ""

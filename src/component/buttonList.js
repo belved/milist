@@ -3,6 +3,7 @@ import Button from './button';
 
 const divStyle = {
     display: 'flex',
+    flexWrap: 'wrap',
     margin: '20px 0px 20px 20px'
   };
 

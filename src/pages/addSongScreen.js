@@ -12,7 +12,7 @@ import AddedSong from '../component/addedSong.js';
 const validateButtonStyle = {
     position: 'absolute',
     display: 'inline-block',
-    left: '400px',
+    left: '30%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

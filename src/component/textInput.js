@@ -9,7 +9,7 @@ const inputStyle = {
   borderRadius : '10px',
   padding: '0px 0px 0px 20px',
   height: '40px',
-  width: '275px'
+  width: '20.3%'
 }
 
 class TextInput extends React.Component {
