@@ -1,20 +1,23 @@
 {
   "files": {
     "main.css": "/milist/static/css/main.226de60f.css",
-    "main.js": "/milist/static/js/main.8ae52ade.js",
+    "main.js": "/milist/static/js/main.d490c4b1.js",
     "static/js/787.26460991.chunk.js": "/milist/static/js/787.26460991.chunk.js",
+    "static/media/update.png": "/milist/static/media/update.435f681729b2db24e64c.png",
     "static/media/bass_guitar.png": "/milist/static/media/bass_guitar.a2746d25a6bcec7ec843.png",
     "static/media/classical_guitar.png": "/milist/static/media/classical_guitar.7ee846a60be188b8053f.png",
     "static/media/acoustic_guitar.png": "/milist/static/media/acoustic_guitar.fc15b53a7b59c1e3ec65.png",
     "static/media/electric_guitar.png": "/milist/static/media/electric_guitar.a80f71dee334a0f32d7b.png",
     "static/media/drum.png": "/milist/static/media/drum.df31097251502479f059.png",
+    "static/media/7_string_guitar.png": "/milist/static/media/7_string_guitar.b21fb234541a4d154415.png",
+    "static/media/delete.png": "/milist/static/media/delete.597eeafa425ac0641ae9.png",
     "index.html": "/milist/index.html",
     "main.226de60f.css.map": "/milist/static/css/main.226de60f.css.map",
-    "main.8ae52ade.js.map": "/milist/static/js/main.8ae52ade.js.map",
+    "main.d490c4b1.js.map": "/milist/static/js/main.d490c4b1.js.map",
     "787.26460991.chunk.js.map": "/milist/static/js/787.26460991.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.226de60f.css",
-    "static/js/main.8ae52ade.js"
+    "static/js/main.d490c4b1.js"
   ]
 }
