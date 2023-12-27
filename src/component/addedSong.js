@@ -41,12 +41,6 @@ const idStyle = {
 }
 
 class AddedSong extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-        isSelected: false
-    }
-  }
 
   handleDelete(i) {
     const confirmation = window.confirm('Are you sure you want to delete this song ?');
@@ -57,14 +51,13 @@ class AddedSong extends React.Component {
   }
 
   handleUpdate(i) {
-    this.setState({isSelected: !this.state.isSelected})
     this.props.handleUpdate(i)
   }
 
     render() {
       return (
         <div style = {divContainer}>
-          {this.state.isSelected? 
+          {this.props.selectedId===this.props.song.id? 
             <div style={divStyleSelected}>
             <div style={idStyle}>{this.props.song.id}</div>
             <b>{this.props.song.artist.name}</b> | {this.props.song.title}

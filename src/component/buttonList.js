@@ -2,7 +2,9 @@ import React from 'react';
 import Button from './button';
 
 const divStyle = {
-    display: 'flex'
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: '20px 0px 20px 20px'
   };
 
 class ButtonList extends React.Component {
