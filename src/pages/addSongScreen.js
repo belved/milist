@@ -22,7 +22,8 @@ class AddSongScreen extends React.Component {
             songCount: "",
             songList: [],
             blockEvent: false,
-            songListForDisplay: []
+            songListForDisplay: [],
+            selectedId: undefined
         }
     }
 
@@ -46,17 +47,6 @@ class AddSongScreen extends React.Component {
         })
 
         return instrument;
-    }
-
-    getStyle() {
-        var styles = []
-        this.state.style.forEach((elem) => {
-            if(elem.state){
-                styles.push(elem.id)
-            }
-        })
-
-        return styles;
     }
 
     getStyleName() {
@@ -96,7 +86,7 @@ class AddSongScreen extends React.Component {
             artist: this.state.selectedArtist.id,
             tuning: this.state.tuning.find((elem) => elem.state === true).id,
             instrument: this.getInstrument(),
-            style: this.getStyle()
+            style: this.state.style.find((elem) => elem.state === true).id
         }
 
         return song;
@@ -106,7 +96,7 @@ class AddSongScreen extends React.Component {
         var song = {
             id: this.state.songCount,
             title: toUpperCase(this.state.songName),
-            artist: this.state.selectedArtist.name,
+            artist: this.state.selectedArtist,
             tuning: this.state.tuning.find((elem) => elem.state === true).name,
             instrument: this.getInstrumentObject(),
             style: this.getStyleName()
@@ -129,12 +119,38 @@ class AddSongScreen extends React.Component {
 
 
             soundCountTemp = soundCountTemp - 1
-        } else {
-            var song = this.constructDisplayedSongObject()
-            
-            songListTemp.push(song)
+        } if(isDelete === false && this.state.selectedId !== undefined) {
+            var displayedSong = this.constructDisplayedSongObject()
+            var dbSong = this.constructSongObject()
+            var selectedId = this.state.selectedId
 
-            displayedListTemp.unshift(song)
+            dbSong.id = selectedId
+            displayedSong.id = selectedId
+
+            var posSongList = songListTemp.findIndex(elem => elem.id === selectedId);
+            var posDisplayedSongList = displayedListTemp.findIndex(elem => elem.id === selectedId);
+
+            songListTemp[posSongList] = dbSong
+            displayedListTemp[posDisplayedSongList] = displayedSong
+            displayedListTemp.sort(this.compareObject)
+
+            this.resetButtonState(this.state.tuning)
+            this.resetButtonState(this.state.instrument)
+            this.resetButtonState(this.state.style)
+            this.setState({
+                selectedArtist: {id: -1, name: ""},
+                selectedId: undefined
+            })
+        } else if(isDelete === false && id === undefined){
+            var displayedSong = this.constructDisplayedSongObject()
+            var dbSong = this.constructSongObject()
+            
+            displayedSong.id = soundCountTemp
+            dbSong.id = soundCountTemp
+
+            songListTemp.push(dbSong)
+
+            displayedListTemp.unshift(displayedSong)
             displayedListTemp.sort(this.compareObject);
             soundCountTemp = soundCountTemp + 1
         }
@@ -152,7 +168,11 @@ class AddSongScreen extends React.Component {
             var song = this.constructSongObject()
 
             const putSong = async () => {
-                await addSong(this.state.songCount.toString(), song)
+                if(this.state.selectedId === undefined) {
+                    await addSong(this.state.songCount.toString(), song)
+                } else {
+                    await addSong(this.state.selectedId.toString(), song)
+                }
                 await findAll("songs")
                 this.resetData(false)
             }
@@ -161,6 +181,12 @@ class AddSongScreen extends React.Component {
         } else {
             alert(dataValidity.getMessage())
         }
+    }
+
+    resetButtonState(collection) {
+        const elem = collection
+        elem.forEach(elem => elem.state = false)
+        this.setState({collection: elem})
     }
 
     handleClickMultiple(i, collection) {
@@ -223,9 +249,9 @@ class AddSongScreen extends React.Component {
 
                 song.id = element.id
                 song.title = element.title
-                song.artist = artistRes.find((artist) => artist.id === element.artist).name
+                song.artist = artistRes.find((artist) => artist.id === element.artist)
                 song.instrument = instrumentList
-                song.style = styleRes.find(style => element.style.some(selectStyle => style.id === selectStyle)).name;
+                song.style = styleRes.find((style) => style.id === element.style).name;
                 song.tuning = tuningRes.find((tuning) => tuning.id === element.tuning).name
                 list.push(song)
             });
@@ -250,8 +276,44 @@ class AddSongScreen extends React.Component {
         const songDeletion = async () => {
             await deleteSong(id)
             this.resetData(true, id)
+            await findAll("songs")
         }
         songDeletion()
+     }
+
+     getArtistById(id){
+        return this.state.artist.find(elem => elem.id === id)
+     }
+
+     updateSong(id) {
+        var songListTemp = this.state.songList
+        var posSongList = songListTemp.findIndex(elem => elem.id === id);
+
+        var song = songListTemp[posSongList]
+
+        this.resetButtonState(this.state.instrument)
+        this.resetButtonState(this.state.style)
+        this.resetButtonState(this.state.tuning)
+
+        if(this.state.selectedId === id) {
+            console.log("t")
+            this.setState({selectedId: undefined})
+            this.resetData(false, id)
+        } else {
+            this.setState({selectedId: song.id})
+
+            var posStyle = this.state.style.findIndex(elem => elem.id === song.style);
+            var posTuning = this.state.tuning.findIndex(elem => elem.id === song.tuning);
+            song.instrument.forEach((inst) => {
+                var pos = this.state.instrument.findIndex(elem => elem.id === inst)
+                this.handleClickMultiple(pos, this.state.instrument)
+            })
+
+            this.onSongChange(song.title)
+            this.handleArtistMenuClick(this.getArtistById(song.artist))
+            this.handleClickSingle(posStyle, this.state.style)
+            this.handleClickSingle(posTuning, this.state.tuning)
+        }
      }
 
      handleArtistMenuClick(val) {
@@ -276,9 +338,9 @@ class AddSongScreen extends React.Component {
                 handleChange={(val => this.handleArtistMenuClick(val))}
             />
             <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
-            <div onClick={() => this.addSong()}>Valider</div>
+            <div onClick={() => this.addSong()}>{this.state.selectedId? "Update" : "Validate"}</div>
             {this.state.songListForDisplay.length > 0 && this.state.songListForDisplay.map((song, i) => {
-                return (<AddedSong song={song} handleDelete={this.deleteSong.bind(this)}/>) 
+                return (<AddedSong song={song} handleDelete={this.deleteSong.bind(this)} handleUpdate={this.updateSong.bind(this)}/>) 
             })}
       </div>
     );
