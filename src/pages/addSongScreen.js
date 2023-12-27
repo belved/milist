@@ -142,11 +142,15 @@ class AddSongScreen extends React.Component {
                 selectedId: undefined
             })
         } else if(isDelete === false && id === undefined){
-            var song = this.constructDisplayedSongObject()
+            var displayedSong = this.constructDisplayedSongObject()
+            var dbSong = this.constructSongObject()
             
-            songListTemp.push(song)
+            displayedSong.id = soundCountTemp
+            dbSong.id = soundCountTemp
 
-            displayedListTemp.unshift(song)
+            songListTemp.push(dbSong)
+
+            displayedListTemp.unshift(displayedSong)
             displayedListTemp.sort(this.compareObject);
             soundCountTemp = soundCountTemp + 1
         }
@@ -287,7 +291,9 @@ class AddSongScreen extends React.Component {
 
         var song = songListTemp[posSongList]
 
-        console.log(songListTemp)
+        this.resetButtonState(this.state.instrument)
+        this.resetButtonState(this.state.style)
+        this.resetButtonState(this.state.tuning)
 
         if(this.state.selectedId === id) {
             console.log("t")
@@ -295,8 +301,6 @@ class AddSongScreen extends React.Component {
             this.resetData(false, id)
         } else {
             this.setState({selectedId: song.id})
-
-            this.resetButtonState(this.state.instrument)
 
             var posStyle = this.state.style.findIndex(elem => elem.id === song.style);
             var posTuning = this.state.tuning.findIndex(elem => elem.id === song.tuning);
