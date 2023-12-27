@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import '../style/dropdownStyle.css'
 
+const dropdownStyle = {
+  border: '1px solid black',
+  borderRadius: '10px',
+  margin: '0px 0px 0px 20px'
+}
+
 const SearchableDropdown = ({
   options,
   label,
@@ -57,12 +63,13 @@ const SearchableDropdown = ({
               handleChange(null);
             }}
             onClick={toggle}
+            style={dropdownStyle}
           />
         </div>
         <div className={`arrow ${isOpen ? "open" : ""}`}></div>
       </div>
 
-      <div className={`options ${isOpen ? "open" : ""}`}>
+      <div className={`options ${isOpen ? "open" : ""}`} style={dropdownStyle}>
         {filter(options).map((option, index) => {
           return (
             <div

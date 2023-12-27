@@ -9,6 +9,33 @@ import { findAll, addSong, deleteSong } from '../services/firestoreHelper.js';
 import SearchableDropdown from '../component/searchableDropdown.js';
 import AddedSong from '../component/addedSong.js';
 
+const validateButtonStyle = {
+    position: 'absolute',
+    display: 'inline-block',
+    left: '400px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    margin: '0px 0px 0px 20px',
+    backgroundColor: 'green',
+    width: '275px',
+    height: '102px',
+    border: '1px solid black',
+    borderRadius: '10px',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '20px'
+}
+
+const lineSeparatorStyle = {
+    margin:'20px 20px 10px 20px',
+    border: 'none',
+    backgroundColor: 'black',
+    height: '3px',
+    opacity: '1'
+}
+
 class AddSongScreen extends React.Component {
     constructor(props){
         super(props)
@@ -330,6 +357,7 @@ class AddSongScreen extends React.Component {
             <ButtonList buttonListObject={this.state.tuning} onClick={this.handleClickSingle.bind(this)}/>
             <ButtonList buttonListObject={this.state.instrument} onClick={this.handleClickMultiple.bind(this)}/>
             <ButtonList buttonListObject={this.state.style} onClick={this.handleClickSingle.bind(this)}/>
+            <div style={validateButtonStyle} onClick={() => this.addSong()}>{this.state.selectedId? "Update" : "Validate"}</div>
             <SearchableDropdown
                 options={this.state.artist}
                 label="name"
@@ -338,7 +366,7 @@ class AddSongScreen extends React.Component {
                 handleChange={(val => this.handleArtistMenuClick(val))}
             />
             <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
-            <div onClick={() => this.addSong()}>{this.state.selectedId? "Update" : "Validate"}</div>
+            <hr style={lineSeparatorStyle}/>
             {this.state.songListForDisplay.length > 0 && this.state.songListForDisplay.map((song, i) => {
                 return (<AddedSong song={song} handleDelete={this.deleteSong.bind(this)} handleUpdate={this.updateSong.bind(this)}/>) 
             })}

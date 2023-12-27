@@ -1,10 +1,15 @@
 import React from 'react';
 
 const divStyle = {
-  margin: '15px 0px 0px 0px'
+  margin: '20px 0px 0px 20px',
 }
 
 const inputStyle = {
+  border: '1px solid black',
+  borderRadius : '10px',
+  padding: '0px 0px 0px 20px',
+  height: '40px',
+  width: '275px'
 }
 
 class TextInput extends React.Component {
@@ -20,11 +25,12 @@ class TextInput extends React.Component {
     render() {
       return (
         <div style={divStyle}>
-          <div style={inputStyle}>
+          <div>
             <input 
                 placeholder={this.props.placeholderText}
                 value={this.props.value} 
-                onChange={evt => this.updateInputValue(evt)}/>
+                onChange={evt => this.updateInputValue(evt)}
+                style={inputStyle}/>
           </div>
         </div>
       );
