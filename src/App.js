@@ -14,8 +14,8 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/milist" element={<AddSongScreen/>} />
-        <Route path="milist/addArtist" element={<AddArtistScreen/>} />
-        <Route path="milist/playlist" element={<PlaylistScreen/>} />
+        <Route exact path="milist/addArtist" element={<AddArtistScreen/>} />
+        <Route exact path="milist/playlist" element={<PlaylistScreen/>} />
       </Routes>
     </Router>
   );
