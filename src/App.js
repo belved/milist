@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import AddSongScreen from './pages/addSongScreen';
 import AddArtistScreen from './pages/addArtistScreen';
+import PlaylistScreen from './pages/playlistScreen';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route exact path="/milist" element={<AddSongScreen/>} />
         <Route path="milist/addArtist" element={<AddArtistScreen/>} />
+        <Route path="milist/playlist" element={<PlaylistScreen/>} />
       </Routes>
     </Router>
   );
