@@ -13,7 +13,7 @@ import List from '../icons/list.png'
 import "react-datepicker/dist/react-datepicker.css";
 
 const lineSeparatorStyle = {
-    margin:'20px 20px 10px 20px',
+    margin:'40px 20px 10px 20px',
     border: 'none',
     backgroundColor: 'black',
     height: '3px',
@@ -21,7 +21,27 @@ const lineSeparatorStyle = {
 }
 
 const imageCloseStyle = {
-    height: '30px'
+    height: '50px'
+}
+
+const randomButtonStyle = {
+    position: 'absolute',
+    display: 'inline-block',
+    margin:'0px 20px 0px 0px',
+    right: '0',
+    height: '50px'
+}
+
+const numberOFSongStyle = {
+    position: 'absolute',
+    display: 'inline-block',
+    margin:'20px 20px 0px 0px',
+    right: '0'
+}
+
+const datePickerStyle = {
+    margin: '0px 0px 0px 20px',
+    width: '300px'
 }
 
 class PlaylistScreen extends React.Component {
@@ -187,14 +207,16 @@ class PlaylistScreen extends React.Component {
         <ButtonList buttonListObject={this.state.tuning} onClick={this.handleClickMultiple.bind(this)}/>
         <ButtonList buttonListObject={this.state.instrument} onClick={this.handleClickMultiple.bind(this)}/>
         <ButtonList buttonListObject={this.state.style} onClick={this.handleClickMultiple.bind(this)}/>
-        <DatePicker selected={this.state.startDate} onChange={(date) => this.setStartDate(date)} />
-        <img style={imageCloseStyle} src={Close} onClick={() => this.setStartDate(null)}/>
+        <div style={datePickerStyle}>
+            <DatePicker selected={this.state.startDate} onChange={(date) => this.setStartDate(date)} />
+            <img style={imageCloseStyle} src={Close} onClick={() => this.setStartDate(null)}/>
+        </div>
         {this.state.isRandom?
-        <img style={imageCloseStyle} src={List} onClick={() => this.setRandomizeState()}/>
+        <img style={randomButtonStyle} src={List} onClick={() => this.setRandomizeState()}/>
         :
-        <img style={imageCloseStyle} src={Random} onClick={() => this.setRandomizeState()}/>}
+        <img style={randomButtonStyle} src={Random} onClick={() => this.setRandomizeState()}/>}
         <br/>
-        Selected song : {this.state.filteredList.length}
+        <div style={numberOFSongStyle}>Selected song : {this.state.filteredList.length}</div>
         <hr style={lineSeparatorStyle}/>
 
         {this.state.filteredList.length > 0 && this.state.filteredList.map((song, i) => {
