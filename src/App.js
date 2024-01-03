@@ -11,11 +11,11 @@ import PlaylistScreen from './pages/playlistScreen';
 
 function App() {
   return (
-    <Router>
+    <Router basename='/milist'>
       <Routes>
-        <Route exact path="/milist" element={<AddSongScreen/>} />
-        <Route exact path="milist/addArtist" element={<AddArtistScreen/>} />
-        <Route exact path="milist/playlist" element={<PlaylistScreen/>} />
+        <Route exact path="/" element={<AddSongScreen/>} />
+        <Route exact path="/addArtist" element={<AddArtistScreen/>} />
+        <Route exact path="/playlist" element={<PlaylistScreen/>} />
       </Routes>
     </Router>
   );
