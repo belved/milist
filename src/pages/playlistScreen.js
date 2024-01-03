@@ -7,6 +7,8 @@ import PlaylistSong from '../component/playlistSong.js';
 import DatePicker from "react-datepicker";
 
 import Close from '../icons/close.png'
+import Random from '../icons/random.png'
+import List from '../icons/list.png'
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -35,7 +37,8 @@ class PlaylistScreen extends React.Component {
             songListForDisplay: {},
             todayDate: 0,
             filteredList: {},
-            startDate: null
+            startDate: null,
+            isRandom: false
         }
     }
 
@@ -103,12 +106,16 @@ class PlaylistScreen extends React.Component {
             const tunningMatch = !this.state.tuning.some(tuning => tuning.state) || this.state.tuning.some(tuning => tuning.state && song.tuning === tuning.name)
             const styleMatch = !this.state.style.some(style => style.state) || this.state.style.some(style => style.state && song.style === style.name)
             const instrumentMatch = !this.state.instrument.some(instrument => instrument.state) || song.instrument.some(songInstrument => this.state.instrument.some(instrument => instrument.state && instrument.id === songInstrument.id));
-            const dateMatch = this.state.startDate === undefined || song.lastPlayed <= this.state.startDate
+            const dateMatch = this.state.startDate === null || song.lastPlayed <= this.state.startDate
 
             return tunningMatch && styleMatch && instrumentMatch && dateMatch;
         })
 
-        listTemp.sort(this.compareObject);
+        if(this.state.isRandom) {
+            listTemp = this.randomizeSongList(listTemp)
+        } else {
+            listTemp.sort(this.compareObject);
+        }
 
         this.setState({filteredList: listTemp})
     }
@@ -156,6 +163,24 @@ class PlaylistScreen extends React.Component {
         setDate()
      }
 
+     setRandomizeState() {
+        const setRandom = async() => {
+            await this.setState({isRandom: !this.state.isRandom})
+            this.refreshSongList()
+        }
+        setRandom()
+     }
+
+    randomizeSongList(list) {
+        const listTemp = list
+        for (let i = listTemp.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [listTemp[i], listTemp[j]] = [listTemp[j], listTemp[i]];
+        }
+    
+        return listTemp
+    }
+
     render(){
         return (
       <div>
@@ -164,6 +189,10 @@ class PlaylistScreen extends React.Component {
         <ButtonList buttonListObject={this.state.style} onClick={this.handleClickMultiple.bind(this)}/>
         <DatePicker selected={this.state.startDate} onChange={(date) => this.setStartDate(date)} />
         <img style={imageCloseStyle} src={Close} onClick={() => this.setStartDate(null)}/>
+        {this.state.isRandom?
+        <img style={imageCloseStyle} src={List} onClick={() => this.setRandomizeState()}/>
+        :
+        <img style={imageCloseStyle} src={Random} onClick={() => this.setRandomizeState()}/>}
         <br/>
         Selected song : {this.state.filteredList.length}
         <hr style={lineSeparatorStyle}/>
