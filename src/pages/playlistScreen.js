@@ -4,6 +4,11 @@ import { findAll, updateSong } from '../services/firestoreHelper.js';
 
 import ButtonList from '../component/buttonList.js';
 import PlaylistSong from '../component/playlistSong.js';
+import DatePicker from "react-datepicker";
+
+import Close from '../icons/close.png'
+
+import "react-datepicker/dist/react-datepicker.css";
 
 const lineSeparatorStyle = {
     margin:'20px 20px 10px 20px',
@@ -11,6 +16,10 @@ const lineSeparatorStyle = {
     backgroundColor: 'black',
     height: '3px',
     opacity: '1'
+}
+
+const imageCloseStyle = {
+    height: '30px'
 }
 
 class PlaylistScreen extends React.Component {
@@ -25,7 +34,8 @@ class PlaylistScreen extends React.Component {
             songList: [],
             songListForDisplay: {},
             todayDate: 0,
-            filteredList: {}
+            filteredList: {},
+            startDate: null
         }
     }
 
@@ -93,8 +103,9 @@ class PlaylistScreen extends React.Component {
             const tunningMatch = !this.state.tuning.some(tuning => tuning.state) || this.state.tuning.some(tuning => tuning.state && song.tuning === tuning.name)
             const styleMatch = !this.state.style.some(style => style.state) || this.state.style.some(style => style.state && song.style === style.name)
             const instrumentMatch = !this.state.instrument.some(instrument => instrument.state) || song.instrument.some(songInstrument => this.state.instrument.some(instrument => instrument.state && instrument.id === songInstrument.id));
+            const dateMatch = this.state.startDate === undefined || song.lastPlayed <= this.state.startDate
 
-            return tunningMatch && styleMatch && instrumentMatch;
+            return tunningMatch && styleMatch && instrumentMatch && dateMatch;
         })
 
         listTemp.sort(this.compareObject);
@@ -132,12 +143,28 @@ class PlaylistScreen extends React.Component {
         update()
      }
 
+     setStartDate(date) {
+        const setDate = async() => {
+            if(date !== null) {
+                date.setHours(23,59,59,0);
+                await this.setState({startDate: date.getTime()})
+            } else {
+                await this.setState({startDate: undefined})
+            }
+            this.refreshSongList()
+        }
+        setDate()
+     }
+
     render(){
         return (
       <div>
         <ButtonList buttonListObject={this.state.tuning} onClick={this.handleClickMultiple.bind(this)}/>
         <ButtonList buttonListObject={this.state.instrument} onClick={this.handleClickMultiple.bind(this)}/>
         <ButtonList buttonListObject={this.state.style} onClick={this.handleClickMultiple.bind(this)}/>
+        <DatePicker selected={this.state.startDate} onChange={(date) => this.setStartDate(date)} />
+        <img style={imageCloseStyle} src={Close} onClick={() => this.setStartDate(null)}/>
+        <br/>
         Selected song : {this.state.filteredList.length}
         <hr style={lineSeparatorStyle}/>
 
