@@ -1,7 +1,7 @@
 import './App.css';
 
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
@@ -11,7 +11,7 @@ import PlaylistScreen from './pages/playlistScreen';
 
 function App() {
   return (
-    <Router basename='/milist'>
+    <Router>
       <Routes>
         <Route path="/" element={<AddSongScreen/>} />
         <Route path="/addArtist" element={<AddArtistScreen/>} />
