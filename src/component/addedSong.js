@@ -17,8 +17,8 @@ const buttonStyle = {
 const divStyle = {
   position: 'relative',
   margin: '10px 10px 0px 20px',
-  padding: '0px 0px 0px 10px',
-  width: '500px',
+  padding: '0px 50px 0px 10px',
+  width: '550px',
   border: '1px solid black',
   borderRadius: '10px'
 }
@@ -26,8 +26,8 @@ const divStyle = {
 const divStyleSelected = {
   position: 'relative',
   margin: '10px 10px 0px 20px',
-  padding: '0px 0px 0px 10px',
-  width: '500px',
+  padding: '0px 50px 0px 10px',
+  width: '550px',
   border: '1px solid black',
   borderRadius: '10px',
   backgroundColor: 'grey'
