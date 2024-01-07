@@ -29,11 +29,18 @@ const validateButtonStyle = {
 }
 
 const lineSeparatorStyle = {
-    margin:'20px 20px 10px 20px',
+    margin:'25px 20px 0px 20px',
     border: 'none',
     backgroundColor: 'black',
     height: '3px',
     opacity: '1'
+}
+
+const songNumberStyle = {
+    position: 'absolute',
+    display: 'inline-block',
+    margin: '0px 20px 0px 0px',
+    right: '0'
 }
 
 class AddSongScreen extends React.Component {
@@ -366,6 +373,7 @@ class AddSongScreen extends React.Component {
                 handleChange={(val => this.handleArtistMenuClick(val))}
             />
             <TextInput placeholderText="Song title" value={this.state.songName} onChange={this.onSongChange.bind(this)}/>
+            <div style={songNumberStyle}>number of song added : {this.state.songCount? this.state.songCount-1 : "0"}</div>
             <hr style={lineSeparatorStyle}/>
             {this.state.songListForDisplay.length > 0 && this.state.songListForDisplay.map((song, i) => {
                 return (<AddedSong song={song} handleDelete={this.deleteSong.bind(this)} handleUpdate={this.updateSong.bind(this)} selectedId={this.state.selectedId}/>) 
