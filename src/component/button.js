@@ -10,7 +10,7 @@ const selectedButtonStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   textAlign: 'center',
-  width: '100px',
+  width: '105px',
   height: '55px',
   backgroundColor: 'orange',
   border: '1px solid black',
@@ -22,7 +22,7 @@ const buttonStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   textAlign: 'center',
-  width: '100px',
+  width: '105px',
   height: '55px',
   border: '1px solid black',
   borderRadius: '10px'
