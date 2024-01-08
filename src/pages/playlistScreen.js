@@ -21,7 +21,8 @@ const lineSeparatorStyle = {
 }
 
 const imageCloseStyle = {
-    height: '50px'
+    margin: '0px 0px 0px 10px',
+    height: '30px'
 }
 
 const randomButtonStyle = {
@@ -29,7 +30,7 @@ const randomButtonStyle = {
     display: 'inline-block',
     margin:'0px 20px 0px 0px',
     right: '0',
-    height: '50px'
+    height: '40px'
 }
 
 const numberOFSongStyle = {
