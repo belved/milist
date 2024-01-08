@@ -8,8 +8,9 @@ import drum from '../icons/drum.png';
 import seven_string_guitar from '../icons/7_string_guitar.png';
 
 const imageStyle = {
-    width: '40px',
-    height: '40px'
+    width: '35px',
+    height: '35px',
+    margin: '0px 0px 5px 10px'
 }
 
 class InstrumentImage extends React.Component {
